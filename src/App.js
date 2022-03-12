@@ -3,10 +3,6 @@ import React, { useEffect, useReducer } from "react";
 import { useSocket } from "./context/SocketContext";
 import { useRTC } from "./context/RTCPeerContext";
 import VideoPlayer from "./components/VideoPlayer";
-import VideoDetails from "./components/VideoDetails";
-import LiveChat from "./components/LiveChat";
-import Header from "./components/Header";
-import { VideoContainer, MainContainer } from "./styles/appStyles";
 
 const appReducer = (state, action) => {
   switch (action.type) {
@@ -41,9 +37,11 @@ const App = () => {
   pc.ontrack = (event) => {
     const {
       track: { kind },
+      receiver,
       streams,
     } = event;
 
+    receiver.playoutDelayHint = 1;
     if (kind === "video") {
       dispatch({ type: "initStream", stream: streams[0] });
     }
@@ -112,14 +110,7 @@ const App = () => {
 
   return (
     <>
-      <Header></Header>
-      <MainContainer>
-        <VideoContainer>
-          <VideoPlayer src={state.stream} />
-          <VideoDetails viewers={state.viewers} />
-        </VideoContainer>
-        <LiveChat></LiveChat>
-      </MainContainer>
+      <VideoPlayer src={state.stream} />
     </>
   );
 };

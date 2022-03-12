@@ -19,7 +19,6 @@ const VideoPlayer = ({ src }) => {
       autoPlay
       controls
       muted
-      poster={VideoPosterURL}
     ></Video>
   );
 };
